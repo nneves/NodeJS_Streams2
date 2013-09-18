@@ -5,24 +5,6 @@ var	readableStream;
 var readableSize = 1*256;
 var	writableStream;
 
-
-// readable stream
-function read() {
-// WHEN PIPING READSTREAM->WRITESTREAM THIS WILL NOT WORK
-  var wflag = false;
-  var buf;
-  while (buf = readableStream.read(readableSize)) {
-
-/*
-  	console.log('\r\n');
-  	console.log('--------------------------------------');
-    console.log('Read from the file');
-  	console.log('--------------------------------------');
-  	console.log('%s', buf);	
-*/  	
-  }
-}
-
 // writable stream
 function write(chunk, encoding, callback) {
  
@@ -32,21 +14,19 @@ function write(chunk, encoding, callback) {
   console.log('--------------------------------------');
   process.stdout.write('\u001b[32m' + chunk + '\u001b[39m'); 
 
-/*
   setTimeout( 
   	function () { 
 		console.log('\r\n');
   		console.log('--------------------------------------');
   		console.log('Requesting more data from readableStream!');
   		console.log('--------------------------------------');
-  		//readableStream.resume(); // <---- PROBLEM, not unlocking the stream flow!!!
-  		readableStream.read(0); 
-  	}, 2000);
 
-*/
+  		//readableStream.emit('drain');
+      writableStream.emit('drain');
+  	}, 1000);
   
-  return false; // seems to be working, will pause the stream flow
-  //return true;
+
+  return false; // will pause the stream flow
 };
 
 // main
@@ -58,15 +38,13 @@ function main () {
 		readableStream = fs.createReadStream(path, {encoding: 'utf8'});
 		writableStream = stream.Writable({highWaterMark : 1});
 
+
 		//readableStream.setEncoding('utf8');
 		//process.stdout.setEncoding('utf8');
 		//readableStream.pipe(process.stdout);
 
 		// Pipe readableStream -> writableStream
-		readableStream.pipe(writableStream);
-
-
-		readableStream.on('readable', read);
+		readableStream.pipe(writableStream, {end: false});
 
 		readableStream.once('end', function() {
   			console.log('Readable Stream Ended');
@@ -85,6 +63,8 @@ function main () {
 		//process.stdin.pipe(writableStream { end: false });
 		//printercore.oStreamPrinter.pipe(process.stdout);
 	}
+
+  readableStream.read(readableSize);
 }
 
 
