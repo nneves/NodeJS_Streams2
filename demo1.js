@@ -31,7 +31,6 @@ function main () {
 		//process.stdout.setEncoding('utf8');
 		//readableStream.pipe(process.stdout);
 
-
 		readableStream.on('readable', read);
 
 		readableStream.once('end', function() {
