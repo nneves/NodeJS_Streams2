@@ -38,7 +38,7 @@ function main () {
 	// check if .gcode file is inserted via command line arguments
 	if (path !==undefined ) {
 		readableStream = fs.createReadStream(path, {encoding: 'utf8'});
-		writableStream = stream.Writable({highWaterMark : 30});
+		writableStream = stream.Writable({highWaterMark : 1});
 
 		//readableStream.setEncoding('utf8');
 		//process.stdout.setEncoding('utf8');
