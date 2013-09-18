@@ -23,7 +23,7 @@ function write(chunk, encoding, callback) {
 
   		//readableStream.emit('drain');
       writableStream.emit('drain');
-  	}, 1000);
+  	}, 250);
   
 
   return false; // will pause the stream flow
@@ -35,8 +35,8 @@ function main () {
 	
 	// check if .gcode file is inserted via command line arguments
 	if (path !==undefined ) {
-		readableStream = fs.createReadStream(path, {encoding: 'utf8'});
-		writableStream = stream.Writable({highWaterMark : 1});
+		readableStream = fs.createReadStream(path, {encoding: 'utf8', highWaterMark : 1});
+		writableStream = stream.Writable();
 
 
 		//readableStream.setEncoding('utf8');
