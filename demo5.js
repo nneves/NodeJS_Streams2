@@ -2,7 +2,7 @@ var fs = require('fs');
 var stream = require('stream');
 var	path = process.argv[2];
 var	readableStream;
-var readableSize = 1*256;
+var readableSize = 4*256;
 var	writableStream;
 
 // writable stream
@@ -35,7 +35,7 @@ function main () {
 	
 	// check if .gcode file is inserted via command line arguments
 	if (path !==undefined ) {
-		readableStream = fs.createReadStream(path, {encoding: 'utf8', highWaterMark : 1});
+		readableStream = fs.createReadStream(path, {encoding: 'utf8', highWaterMark : 8});
 		writableStream = stream.Writable();
 
 
